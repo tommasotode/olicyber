@@ -1,46 +1,51 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
-s = requests.Session()
+s = requests.session()
+url = "http://infinite.challs.olicyber.it/"
+r = s.get(url)
+soup = BeautifulSoup(r.text, "html.parser")
+
 for i in range(520):
     print(i)
 
-    r = s.get("http://infinite.challs.olicyber.it/")    
-    if 'flag' in r.text:
-        print(r.text)
-        break
-    
-    soup = BeautifulSoup(r.text, 'html.parser')
-    test = soup.find('h2')
-    
+    test = soup.find("h2")
     if "MATH" in str(test):
-        operation = str(soup.find('p')).split("+")
+        operation = str(soup.find("p")).split("+")
         n1 = int(operation[0].split(" ")[2].strip())
         n2 = int(operation[1].split("?")[0].strip())
-        
-        data = f'sum={n1+n2}'
-        s.post("http://infinite.challs.olicyber.it/", data=data)
+
+        data = {"sum": (n1 + n2)}
+        res = s.post(url, data=data)
+        if "WRONG" in res.text:
+            break
+        elif "flag" in res.text:
+            break
 
     elif "ART" in str(test):
-        color = str(soup.find('p'))
-        color = color.split(" ")[-1][:-5].strip()        
-        
-        data = f'{color}:""'
-        s.post("http://infinite.challs.olicyber.it/", data=data)
+        color = str(soup.find("p"))
+        color = color.split(" ")[-1][:-5].strip()
+
+        data = color + "="
+        res = s.post(url, data=data)
+        if "WRONG" in res.text:
+            break
+        elif "flag" in res.text:
+            break
 
     elif "GRAMMAR" in str(test):
-        domanda = str(soup.find('p'))
+        domanda = str(soup.find("p"))
         lettera = domanda.split(" ")[1][1:-1]
         parola = domanda.split(" ")[6][1:-6]
 
-        c = 0
-        for i in parola:
-            if i == lettera:
-                c += 1
+        c = len(re.findall(lettera, parola))
 
-        data = f'letter:"{c}"'
-        s.post("http://infinite.challs.olicyber.it/", data=data)
+        data = {"letter": c}
+        res = s.post(url, data=data)
+        if "WRONG" in res.text:
+            break
+        elif "flag" in res.text:
+            break
 
-
-
-pass
+    soup = BeautifulSoup(res.text, "html.parser")
