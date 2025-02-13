@@ -1,4 +1,4 @@
-m = 10 # message
+m = 10
 
 p = 19
 q = 7
@@ -22,10 +22,8 @@ def egcd(a, b):
 # d such that (d * e) % phi(n) = 1
 def modinv(a, m):
     g, x, y = egcd(a, m)
-    if g != 1:
-        raise Exception('Modular inverse does not exist')
-    else:
-        return x % m
+
+    return x % m
 
 d = modinv(e, phi_n)
 print(f"d = {d}")
@@ -33,6 +31,5 @@ print(f"d = {d}")
 c = pow(m, e, n)
 print(f"c = {c}")
 
-dec = pow(c, d, n)
-
-print(f"{dec} == {m} : {dec == m}")
+decrypt = pow(c, d, n)
+print(f"{decrypt} == {m} : {decrypt == m}")
