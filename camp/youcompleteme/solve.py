@@ -1,4 +1,4 @@
-with open('camp/complete/words.txt') as f:
+with open('camp/youcompleteme/words.txt') as f:
     words = list(sorted([word.strip().encode('utf-8') for word in f.readlines()]))
 
 for w in words:

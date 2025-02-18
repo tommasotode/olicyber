@@ -2,7 +2,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
 
-with open('camp/complete/words.txt') as f:
+with open('camp/youcompleteme/words.txt') as f:
     words = list(sorted([word.strip().encode('utf-8') for word in f.readlines()]))
 
 
