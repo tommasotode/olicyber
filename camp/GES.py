@@ -38,38 +38,33 @@ def from_base_18(digits):
 def encode(s):
     final = ""
     res = ""
+
+    # pari dispari
     for _ in range(0, len(s), 2):
         final += s[_]
     for _ in range(1, len(s), 2):
         final += s[_]
-    # pari dispari
 
-    i = int.from_bytes(final[::-1].encode(), "big")
     # bytes (girati)
+    i = int.from_bytes(final[::-1].encode(), "big")
 
-    a = to_base_18(i)
     # base 18
+    a = to_base_18(i)
 
+    # righe
     for n in a:
         res += m[n] + ";"
-    # crea riga
 
-    return res[:-1]
     # toglie ultimo ;
+    return res[:-1]
 
 
 def decode(s):
-    a = []
-    for i, st in enumerate(s.split(";")):
-        index = m.index(st)
-        a.append(index)
+    indici = [m.index(line) for line in s.split(";")]
 
-    tmp = from_base_18(a).decode()[::-1]
+    tmp = from_base_18(indici).decode()[::-1]
     res = ""
-    for i in range(33):
-        if i == 32:
-            break
-
+    for i in range(32):
         res += tmp[i]
         res += tmp[i + 33]
 
