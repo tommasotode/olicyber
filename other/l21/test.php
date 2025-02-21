@@ -8,7 +8,7 @@ function create_cookies($username,$password,$key="aaaaaaaaaaaaaaaa") {
     global $cipher;
 
     $iv = 'bbbbbbbbbbbbbbbb';
-    $session = bin2hex ($iv).bin2hex ( openssl_encrypt($plain, $cipher, $key, $options=0, $iv) );
+    $session = bin2hex($iv) . bin2hex(base64_decode(openssl_encrypt($plain, $cipher, $key, $options=0, $iv)));
     setcookie ("session", $session, time () + 60*1000*15);
 }
 
@@ -18,7 +18,7 @@ function auth($session, $key="aaaaaaaaaaaaaaaa") {
 
     global $cipher;
 
-    $session = openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv);
+    $session = rtrim( openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv), "\0");
     var_dump($session);
 
     if (strpos($session, ":") > 0 && substr ($session, 0, strlen ('user/pass')) === 'user/pass') {
