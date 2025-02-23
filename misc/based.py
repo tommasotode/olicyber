@@ -8,27 +8,26 @@ r.recvlines(4)
 
 try:
     while True:
-        instruction = r.recvline().decode()
+        instruction = r.recvline()
         data = r.recvline().decode().split(":")[-1].strip()[1:-2]
 
-        if 'esadecimale' in instruction:
-            if 'da' in instruction:
+        if b'esadecimale' in instruction:
+            if b'da' in instruction:
                 res = bytes.fromhex(data).decode()
-            elif 'a' in instruction:
+            elif b'a' in instruction:
                 res = data.encode().hex()
 
-        elif 'base64' in instruction:
-            if 'da' in instruction:
+        elif b'base64' in instruction:
+            if b'da' in instruction:
                 res = b64d(data).decode()
-            elif 'a' in instruction:
+            elif b'a' in instruction:
                 res = b64e(data.encode())
 
-        elif 'binario' in instruction:
-            if 'da' in instruction:
+        elif b'binario' in instruction:
+            if b'da' in instruction:
                 n = int(data, 2)
                 res = n.to_bytes((n.bit_length() + 7) // 8, 'big').decode()
-
-            elif 'a' in instruction:
+            elif b'a' in instruction:
                 res = ''.join(format(ord(char), '08b') for char in data).lstrip('0')
 
         a = '{"answer": "'+res+'"}'
