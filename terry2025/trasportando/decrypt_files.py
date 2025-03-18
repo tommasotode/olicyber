@@ -8,13 +8,13 @@ def decrypt_file(filename):
     iv = b'\x00' * 16
     
     chunk_files = sorted(
-        [f for f in os.listdir('chunks3') if f.startswith(f"{filename}_")],
+        [f for f in os.listdir('terry2025/trasportando/chunks3') if f.startswith(f"{filename}_")],
             key=lambda x: int(x.split('_')[-1].split('.')[0])
         )
     
     decrypted_content = b''
     for chunk_file in chunk_files:
-        with open(os.path.join('chunks3', chunk_file), 'rb') as f:
+        with open(os.path.join('terry2025/trasportando/chunks3', chunk_file), 'rb') as f:
             ciphertext = f.read()
         
         cipher = AES.new(key, AES.MODE_CBC, iv)
