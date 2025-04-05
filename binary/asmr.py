@@ -2,7 +2,7 @@ import angr
 import claripy
 
 def solve(flaglen, succaddr, failaddr):
-    p = angr.Project("software/asmr/asmr", auto_load_libs=False)
+    p = angr.Project("./binary/asmr", auto_load_libs=False)
     
     chars = [claripy.BVS(f'c{i}', 8) for i in range(flaglen)]
     flag = claripy.Concat(*chars + [claripy.BVV(b'\n')])
